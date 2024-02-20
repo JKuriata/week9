@@ -1,14 +1,17 @@
 const { Router } = require("express");
 const userRouter = Router();
 
-//importing
-const { signupUser, findAllUsers } = require("./controllers");
+const { hashPass, comparePass } = require("../middleware/auth");
+
+//importing from controllers
+const { signupUser, findAllUsers, login } = require("./controllers");
 
 //creating a user
-userRouter.post("/users/signup", signupUser);
+userRouter.post("/users/signup", hashPass, signupUser);
 
-//
-userRouter.get("/users", findAllUsers);
+userRouter.post("/users/login", comparePass, login);
+
+userRouter.get("/users/findAllUsers", findAllUsers);
 
 //exporting
 module.exports = userRouter;
